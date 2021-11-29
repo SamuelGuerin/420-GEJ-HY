@@ -11,7 +11,7 @@ namespace StripeDemo.Controllers {
 
         readonly ProductModel rubberducks = new ProductModel {
             Name = "Rubberduck",
-            Price = 10
+            Price = 10D
         };
 
         public PaymentController(IOptions<StripeOptions> stripeOptions) {
@@ -28,12 +28,12 @@ namespace StripeDemo.Controllers {
 
         [HttpPost]
         public JsonResult Charges([FromBody] ChargesModel model) {
-            StripeConfiguration.SetApiKey(stripeOptions.Value.SecretKey);
+            StripeConfiguration.ApiKey = stripeOptions.Value.SecretKey;
 
             var options = new ChargeCreateOptions {
                 Amount = model.AmountInCents,
                 Description = model.Description,
-                SourceId = model.Token,
+                Source = model.Token,
                 Currency = model.CurrencyCode
             };
             var service = new ChargeService();
